@@ -1,0 +1,114 @@
+{
+  "weldingRobot": {
+    "name": "Welding Robot",
+    "errorRate": {
+      "normalRange": [0.1, 1.0],
+      "abnormalRange": [1.1, 2.0],
+      "optimalRange": [0.0, 0.1]
+    },
+    "vibrationLevel": {
+      "normalRange": [1.0, 5.0],
+      "abnormalRange": [5.1, 10.0],
+      "optimalRange": [0.0, 1.0]
+    },
+    "electrodeWear": {
+      "normalRange": [0.1, 1.0],
+      "abnormalRange": [1.1, 2.0],
+      "optimalRange": [0.0, 0.1]
+    },
+    "shieldingPressure": {
+      "normalRange": [10.0, 15.0],
+      "abnormalRange": [15.1, 20.0],
+      "optimalRange": [5.0, 10.0]
+    },
+    "wireFeedRate": {
+      "normalRange": [5.0, 10.0],
+      "abnormalRange": [10.1, 15.0],
+      "optimalRange": [0.0, 5.0]
+    },
+    "arcStability": {
+      "normalRange": [90.0, 95.0],
+      "abnormalRange": [95.1, 100.0],
+      "optimalRange": [85.0, 90.0]
+    },
+    "seamWidth": {
+      "normalRange": [1.0, 2.0],
+      "abnormalRange": [2.1, 3.0],
+      "optimalRange": [0.5, 1.0]
+    },
+    "coolingEfficiency": {
+      "normalRange": [80.0, 90.0],
+      "abnormalRange": [90.1, 100.0],
+      "optimalRange": [70.0, 80.0]
+    }
+  },
+  "paintingStation": {
+    "name": "Painting Station",
+    "flowRate": {
+      "normalRange": [20.0, 30.0],
+      "abnormalRange": [30.1, 40.0],
+      "optimalRange": [10.0, 20.0]
+    },
+    "pressure": {
+      "normalRange": [50.0, 60.0],
+      "abnormalRange": [60.1, 70.0],
+      "optimalRange": [40.0, 50.0]
+    },
+    "colorConsistency": {
+      "normalRange": [90.0, 95.0],
+      "abnormalRange": [95.1, 100.0],
+      "optimalRange": [85.0, 90.0]
+    },
+    "nozzleCondition": {
+      "normalRange": [0, 1],
+      "abnormalRange": [2, 3],
+      "optimalRange": [0, 0]
+    }
+  },
+  "assemblyLine": {
+    "name": "Assembly Line",
+    "alignmentAccuracy": {
+      "normalRange": [0.1, 1.0],
+      "abnormalRange": [1.1, 2.0],
+      "optimalRange": [0.0, 0.1]
+    },
+    "speed": {
+      "normalRange": [5.0, 10.0],
+      "abnormalRange": [10.1, 15.0],
+      "optimalRange": [0.0, 5.0]
+    },
+    "fittingTolerance": {
+      "normalRange": [0.01, 0.05],
+      "abnormalRange": [0.06, 0.1],
+      "optimalRange": [0.0, 0.01]
+    },
+    "beltSpeed": {
+      "normalRange": [1.0, 2.0],
+      "abnormalRange": [2.1, 3.0],
+      "optimalRange": [0.5, 1.0]
+    }
+  },
+  "qualityControlStation": {
+    "name": "Quality Control Station",
+    "cameraCalibration": {
+      "normalRange": [0, 1],
+      "abnormalRange": [2, 3],
+      "optimalRange": [0, 0]
+    },
+    "lightIntensity": {
+      "normalRange": [90.0, 95.0],
+      "abnormalRange": [95.1, 100.0],
+      "optimalRange": [85.0, 90.0]
+    },
+    "softwareVersion": {
+      "normalRange": ["v1.0", "v2.0"],
+      "abnormalRange": ["v2.1", "v3.0"],
+      "optimalRange": ["v1.0", "v2.0"]
+    },
+    "criteriaSettings": {
+      "normalRange": [0, 1],
+      "abnormalRange": [2, 3],
+      "optimalRange": [0, 0]
+    }
+  }
+}
