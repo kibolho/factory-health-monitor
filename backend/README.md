@@ -16,7 +16,7 @@ Follow these steps to set up the BellSant Machine Health API:
 1. Navigate to the project directory:
 
    ```bash
-   cd api
+   cd backend
    ```
 
 2. Install dependencies using Yarn (or npm if you prefer):
