@@ -1,4 +1,4 @@
-import {Request} from 'express';
+import { db } from "../../utils/db";
 import {
   AssemblyLinePart,
   MachineType,
@@ -6,44 +6,32 @@ import {
   QualityControlStationPart,
   WeldingRobotPart,
   partInfo,
-} from '../../../../native-app/data/types';
-import {calculateMachineHealth} from './calculations';
+} from "../../../../native-app/data/types";
+import { calculateMachineHealth } from "./calculations";
+import { MachineHealthRecord } from "./schemas";
 
-export const getMachineHealth = (req: Request) => {
-  /* Assuming the request body contains the machine's name and parts data in the format of
-  {
-    "machines": {
-      "assemblyLine": {
-        "alignmentAccuracy": 0.5
-      },
-      "weldingRobot": {
-        "vibrationLevel": 4.0,
-        "electrodeWear": 0.8,
-      }
-    }
-  }
-  */
-  const {
-    machines,
-  }: {
-    machines: Record<
+export const getMachineHealthCalculation = (
+  machines: Partial<
+    Record<
       MachineType,
-      Record<
-        | WeldingRobotPart
-        | AssemblyLinePart
-        | PaintingStationPart
-        | QualityControlStationPart,
-        string
+      Partial<
+        Record<
+          | WeldingRobotPart
+          | AssemblyLinePart
+          | PaintingStationPart
+          | QualityControlStationPart,
+          number
+        >
       >
-    >;
-  } = req.body;
-
+    >
+  >
+) => {
   if (!machines) {
-    return {error: 'Invalid input format'};
+    return { error: "Invalid input format" };
   }
 
   const machineScores: {
-    [key in MachineType]?: string;
+    [key in MachineType]?: number;
   } = {};
   let factoryScore = 0;
   let machineCount = 0;
@@ -55,7 +43,7 @@ export const getMachineHealth = (req: Request) => {
       | AssemblyLinePart
       | PaintingStationPart
       | QualityControlStationPart,
-      string
+      number
     >;
     const machineScore = calculateMachineHealth(
       machineName as MachineType,
@@ -67,13 +55,13 @@ export const getMachineHealth = (req: Request) => {
           | QualityControlStationPart;
         parts.push({
           name: partNameTyped,
-          value: parseFloat(machine[partNameTyped]),
+          value: machine[partNameTyped],
         });
         return parts;
-      }, []),
+      }, [])
     );
 
-    machineScores[machineName as MachineType] = machineScore.toFixed(2);
+    machineScores[machineName as MachineType] = Number(machineScore.toFixed(2));
 
     factoryScore += machineScore;
     machineCount++;
@@ -83,7 +71,43 @@ export const getMachineHealth = (req: Request) => {
   factoryScore = machineCount > 0 ? factoryScore / machineCount : 0;
 
   return {
-    factory: factoryScore.toFixed(2),
+    factory: Number(factoryScore.toFixed(2)),
     machineScores,
   };
+};
+
+export const createMachineHealthRecord = async (
+  record: MachineHealthRecord
+) => {
+  return db.machineHealthRecord.create({
+    data: record,
+  });
+};
+
+export const getAllMachineHealthRecords = async () => {
+  const records = await db.machineHealthRecord.findMany();
+
+  return records.reduce((result, record) => {
+    const machineType = record.machine as MachineType;
+    const partType = record.partType as
+      | WeldingRobotPart
+      | AssemblyLinePart
+      | PaintingStationPart
+      | QualityControlStationPart;
+
+    if (!result[machineType]) {
+      result[machineType] = {};
+    }
+
+    if (!!result[machineType][partType]) {
+      result[machineType][partType] = Math.max(
+        result[machineType][partType] as number,
+        record.value
+      );
+    } else {
+      result[machineType][partType] = record.value;
+    }
+
+    return result;
+  }, {} as Record<MachineType, Partial<Record<WeldingRobotPart | AssemblyLinePart | PaintingStationPart | QualityControlStationPart, number>>>);
 };
