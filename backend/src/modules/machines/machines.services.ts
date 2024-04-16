@@ -6,7 +6,7 @@ import {
   QualityControlStationPart,
   WeldingRobotPart,
   partInfo,
-} from '../native-app/data/types';
+} from '../../../../native-app/data/types';
 import {calculateMachineHealth} from './calculations';
 
 export const getMachineHealth = (req: Request) => {

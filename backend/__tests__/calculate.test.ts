@@ -1,4 +1,4 @@
-import {calculatePartHealth, calculateMachineHealth} from '../calculations';
+import {calculatePartHealth, calculateMachineHealth} from '../src/modules/machines/calculations';
 import {
   MachineType,
   WeldingRobotPart,

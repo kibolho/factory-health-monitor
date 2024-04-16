@@ -1,5 +1,5 @@
-import machineData from '../native-app/data/machineData.json';
-import {MachineType, partInfo} from '../native-app/data/types';
+import machineData from '../../../../native-app/data/machineData.json';
+import {MachineType, partInfo} from '../../../../native-app/data/types';
 
 const machineDataTyped = machineData as Record<
   MachineType,

@@ -1,0 +1,9 @@
+export enum ErrorsType {
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  INVALID_TOKEN = 'INVALID_TOKEN',
+  NOT_FOUND = 'NOT_FOUND',
+  DATA_INTEGRITY_VIOLATION = 'DATA_INTEGRITY_VIOLATION',
+  VALIDATION_ERROR = 'VALIDATION_ERROR'
+}
+
+export type BaseErrorsType = keyof typeof ErrorsType
