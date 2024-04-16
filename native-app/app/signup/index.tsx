@@ -16,7 +16,7 @@ import { Version } from "../../infra/utils/version";
 import { useAuth } from "../../providers/authProvider";
 import { KeyboardAvoiding } from "../../components/KeyboardAvoidView";
 
-const loginFormSchema = z.object({
+const signUpFormSchema = z.object({
   email: z
     .string({
       required_error: "Insert your email",
@@ -30,15 +30,15 @@ const loginFormSchema = z.object({
     .regex(/\d+/, { message: "The password should contain at least 1 digit" }),
 });
 
-export type LoginValues = z.infer<typeof loginFormSchema>;
+export type SignUpValues = z.infer<typeof signUpFormSchema>;
 
-export default function Login() {
+export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const { userInfo, setUserInfo, setTokens } = useAuth();
 
-  const { control, handleSubmit, setValue, setFocus } = useForm<LoginValues>({
+  const { control, handleSubmit, setValue, setFocus } = useForm<SignUpValues>({
     reValidateMode: "onChange",
-    resolver: zodResolver(loginFormSchema),
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       email: userInfo?.email,
     },
@@ -48,18 +48,18 @@ export default function Login() {
     if (userInfo?.email) setValue("email", userInfo?.email);
   }, [userInfo]);
 
-  const onSubmit = async (data: LoginValues) => {
+  const onSubmit = async (data: SignUpValues) => {
     setIsLoading(true);
     login(data);
   };
 
   const login = async (
-    data: LoginValues,
+    data: SignUpValues,
     onSuccess?: () => void,
     onError?: () => void
   ) => {
     const { statusCode, body } = await httpClient.request({
-      url: API_ROUTES.login,
+      url: API_ROUTES.register,
       method: "post",
       isAuthenticated: false,
       body: data,
@@ -78,7 +78,7 @@ export default function Login() {
       return router.push("/(tabs)");
     }
     setIsLoading(false);
-    Alert.alert("Error", body?.message || "Unable to log in. Try again.");
+    Alert.alert("Error", body?.message || "Unable to sign up. Try again.");
     onError?.();
   };
 
@@ -87,7 +87,7 @@ export default function Login() {
       <KeyboardAvoiding>
         <BodyView>
           <Header>
-            <Title>Login</Title>
+            <Title>Sign up</Title>
           </Header>
           <Controller
             name="email"
@@ -143,15 +143,15 @@ export default function Login() {
             onPress={handleSubmit(onSubmit)}
             isLoading={isLoading}
           >
-            Login
+            Sign Up
           </Button.Primary>
 
           <Button.Tertiary
             onPress={() => {
-              router.replace("/signup");
+              router.replace("/login");
             }}
           >
-            Sign up
+            Log In
           </Button.Tertiary>
         </ColumnView>
       </KeyboardAvoiding>

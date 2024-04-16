@@ -5,5 +5,6 @@ export const API_ROUTES = {
     Platform?.OS === "android" ? "10.0.2.2" : "localhost"
   }:3001`,
   login: "/auth/login",
+  register: "/auth/register",
   refresh: "/auth/refresh",
 };
