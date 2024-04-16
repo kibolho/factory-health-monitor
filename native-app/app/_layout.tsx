@@ -10,6 +10,10 @@ export {
   ErrorBoundary,
 } from 'expo-router';
 
+if (__DEV__) {
+  require('../infra/ReactotronConfig');
+}
+
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
