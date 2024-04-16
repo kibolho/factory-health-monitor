@@ -1,11 +1,11 @@
-import {Button, Platform, StyleSheet} from 'react-native';
-import {Text, View} from '../../components/Themed';
-import {Link, useFocusEffect} from 'expo-router';
 import axios from 'axios';
-import {useMachineData} from '../useMachineData';
-import {useCallback, useState} from 'react';
-import {PartsOfMachine} from '../../components/PartsOfMachine';
-import {MachineScore} from '../../components/MachineScore';
+import { Link, useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
+import { Button, Platform, StyleSheet } from 'react-native';
+import { MachineScore } from '../../components/MachineScore';
+import { PartsOfMachine } from '../../components/PartsOfMachine';
+import { Text, View } from '../../components/Themed';
+import { useMachineData } from '../../hooks/useMachineData';
 
 let apiUrl: string =
   'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
@@ -13,7 +13,7 @@ let apiUrl: string =
 if (__DEV__) {
   apiUrl = `http://${
     Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
-  }:3001/machine-health`;
+  }:3001/machine-health/register`;
 }
 
 export default function StateScreen() {

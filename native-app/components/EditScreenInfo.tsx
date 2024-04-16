@@ -3,11 +3,11 @@ import {Button, Platform, StyleSheet, TextInput} from 'react-native';
 
 import {Text, View} from './Themed';
 import {MachineType} from '../data/types';
-import {useMachineData} from '../app/useMachineData';
+import {useMachineData} from '../hooks/useMachineData';
 import {useFocusEffect} from 'expo-router';
 import Picker from './Picker';
 
-export default function EditScreenInfo({path}: {path: string}) {
+export default function EditScreenInfo() {
   const [machineName, setMachineName] = useState('');
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
@@ -76,10 +76,6 @@ export default function EditScreenInfo({path}: {path: string}) {
     },
   ];
 
-  const apiUrl: string = `http://${
-    Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
-  }:3001/machine-health`;
-
   const savePart = useCallback(async () => {
     try {
       const newMachineData = machineData
@@ -90,7 +86,7 @@ export default function EditScreenInfo({path}: {path: string}) {
         newMachineData.machines[machineName] = {};
       }
 
-      newMachineData.machines[machineName][partName] = partValue;
+      newMachineData.machines[machineName][partName] = Number(partValue);
 
       await updateMachineData(newMachineData);
       setIsSaved(true);
@@ -126,6 +122,7 @@ export default function EditScreenInfo({path}: {path: string}) {
       <TextInput
         style={styles.input}
         value={partValue}
+        keyboardType='numeric'
         onChangeText={(text) => setPartValue(text)}
         placeholder='Enter part value'
       />
