@@ -54,6 +54,8 @@ To run the mobile, run the following commands:
 - [x] Persistence Layer on the Backend (Prisma ORM + SQL Lite)
 - [x] Record Machine Health Data on Backend
 - [ ] Change to Production Database
+- [ ] Implement a section to show the history of scores with trends over time.
+- [ ] Include visualizations such as charts or graphs to represent the trends in machine health scores.
 - [ ] Add more tests
 - [ ] Add more features
 
