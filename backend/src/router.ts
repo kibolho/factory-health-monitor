@@ -4,6 +4,7 @@ import Express, { Request, Response } from 'express'
 
 import { findRouters } from './utils/find-routes'
 import { makeDocsRouters } from './docs/docs-routers'
+import { exceptionMiddleware } from './middlewares/exception-middleware'
 
 export const makeRouters = async (app: Express.Application): Promise<void> => {
   const modulePath = path.join(__dirname, './modules')
@@ -16,7 +17,9 @@ export const makeRouters = async (app: Express.Application): Promise<void> => {
 
   await makeDocsRouters(app)
 
-  app.get('*', function (request: Request, response: Response) {
+  app.all('*', function (request: Request, response: Response) {
     response.sendStatus(404)
   })
+  app.use(exceptionMiddleware)
+
 }

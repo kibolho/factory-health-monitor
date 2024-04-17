@@ -1,3 +1,5 @@
+import { InvalidTokenError } from "../exceptions/invalid-token-error";
+import { ValidationError } from "../exceptions/validation-error";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
@@ -9,7 +11,7 @@ export function isAuthenticated(
   const { authorization } = req.headers;
   if (!authorization) {
     res.status(401);
-    throw new Error("Token in authorization header is missing.");
+    throw new ValidationError("Token in authorization header is missing.");
   }
 
   try {
@@ -19,18 +21,12 @@ export function isAuthenticated(
 
     if(typeof payload === 'string'){
       res.status(401);
-      throw new Error('JWT malformed.');
+      throw new ValidationError('JWT malformed.');
     }
     // @ts-ignore
     req.payload = payload;
   } catch (err) {
-    console.error(err)
-    res.status(401);
-    const error = err as { name: string };
-    if (error.name === "TokenExpiredError") {
-      throw new Error(error.name);
-    }
-    throw new Error("🚫 Un-Authorized 🚫");
+    throw new InvalidTokenError("🚫 Un-Authorized 🚫");
   }
 
   return next();

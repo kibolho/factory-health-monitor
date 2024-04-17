@@ -189,33 +189,14 @@ const Title = styled.Text`
   color: #000000;
 `;
 
-const RowView = styled.View`
-  wrap: nowrap;
-  gap: 6px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const BottomView = styled.View`
   justify-content: flex-end;
   padding-bottom: 20px;
   margin-top: 20px;
 `;
-
-const Label = styled.Text`
-  font-family: SF Pro Text;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: center;
-  color: #999999;
-`;
-
 const VersionText = styled.Text`
   margin-top: 12px;
   text-align: center;
-  font-family: SF Pro Text;
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;

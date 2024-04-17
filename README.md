@@ -2,13 +2,62 @@
 
 ## Overview
 
-You are provided with a starter project that includes a React Native mobile app and a backend API, each in their respective folders. Each folder contains a README with instructions on how to run the builds. The goal of this coding challenge is to add authentication and session management to the app, improve the state management of the data returned by the API, and implement a persistence layer on the backend. When a user logs in, their history of data points and scores should be retrieved and displayed.
+The application is a tool for evaluating the health of various machines in an automobile manufacturing plant. This plant features a range of machines, each with specific data points that you will use to assess the condition of the production process.
 
-### The Application
+[Original Challenge README.md](./README-challenge)
 
-The application you'll be working on is a tool for evaluating the health of various machines in an automobile manufacturing plant. This plant features a range of machines, each with specific data points that you will use to assess the condition of the production process.
+## Backend
 
-#### Machines and Their Variables
+The backend is a Node.js API built with Express.js and Prisma ORM. The API provides endpoints for user authentication, machine health data, and user data. The API is connected to a SQL Lite database for data persistence.
+
+To run the backend, run the following commands:
+
+```bash
+   cd backend && yarn install
+```
+
+Then run the migrations:
+
+```bash
+   npx prisma migrate dev
+```
+
+And finally run the backend:
+
+```bash
+   yarn start
+```
+
+### API Documentation
+
+We have the OpenAPI documentation for the API in the `backend` folder. You can view the documentation by running the backend and navigating to `http://localhost:3001/docs`.
+
+[![docs-image](./.github/docs.png)](http://localhost:3001/docs)
+
+## Mobile
+
+The mobile app is a React Native app built with Expo. The app provides a user interface for logging in, viewing machine health data, and viewing user data.
+
+Follow the setup requirements at [Expo Guide](https://docs.expo.dev/get-started/installation/).
+
+To run the mobile, run the following commands:
+
+```bash
+   cd native-app && yarn install && yarn start
+```
+
+## Features
+
+- [x] Authentication (JWT 5min expiry and refresh token 8h expiry)
+- [x] Session Management
+- [x] Data State Management using React Query
+- [x] Persistence Layer on the Backend (Prisma ORM + SQL Lite)
+- [x] Record Machine Health Data on Backend
+- [ ] Change to Production Database
+- [ ] Add more tests
+- [ ] Add more features
+
+### Machines and Their Variables
 
 1. **Welding Robots**
 
@@ -40,90 +89,3 @@ The application you'll be working on is a tool for evaluating the health of vari
    - Inspection Light Intensity
    - Inspection Software Version
    - Inspection Criteria Settings
-
-### Time Limit
-
-You are expected to spend approximately 3 hours on this challenge. While we understand that building a app can be a never-ending task, we're interested in seeing how far you can get and how you prioritize tasks to maximize quality/delivery within the given time frame.
-
-## Repository Structure
-
-The repository is structured as follows:
-
-```
-├── native-app/
-│   ├── source code files...
-│   ├── README.md               # The README file for running the React Native Mobile app
-│   └── ...
-│
-├── backend/
-│   ├── source code files...
-│   ├── README.md               # The README file for running the API Backend
-│   └── ...
-│
-├── MachineHealth.apk           # The compiled android app for running on a device or emulator (if helpful)
-├── README.md                   # This README file
-```
-
-## Getting Started
-
-1. Fork this repository to your GitHub account.
-2. Clone your forked repository to your local machine.
-
-## Running the App Locally
-
-To run the Machine Health Evaluation app locally, you'll need to set up and run both the React Native app and the API backend separately. Each of the respective folders are in this director and each have their own README files to help you get started.
-
-To use the Machine Health Evaluation app locally, you'll need to keep both the API and the React Native app running simultaneously. It's recommended to open separate terminal/command windows for each and run them in parallel.
-
-- In one terminal window, navigate to the `backend` folder and run the API backend.
-- In another terminal window, navigate to the `native-app` folder and run the React Native app.
-
-Keep in mind that the React Native app relies on the API to fetch and calculate machine health data. Ensure that the API is accessible to the app for it to function correctly.
-
-For specific details on running the API and React Native app, refer to their respective README files in their respective folders.
-
-## Requirements
-
-1. **Authentication and Session Management:**
-
-   - Implement user authentication in the Expo mobile app. Users should be able to log in securely using credentials.
-   - Manage user sessions and ensure that users remain authenticated between app sessions.
-
-2. **Data State Management:**
-
-   - Review and update (as needed) the existing state management for data returned by the API. Feel free to bring in a state management library if it'd be helpful.
-   - Ensure that the app efficiently manages and updates the state when new data points and scores are fetched.
-
-3. **Persistence Layer on the Backend:**
-
-   - Implement a persistence layer on the backend to store historical data points and scores for each user/machine.
-   - When a new data point or score is recorded, ensure it is stored in the persistence layer for future retrieval.
-
-4. **Stretch Goals (Optional):**
-   - Implement a section to show the history of scores with trends over time.
-   - Include visualizations such as charts or graphs to represent the trends in machine health scores.
-
-## Guidelines
-
-- Use the provided backend API and Expo mobile app as a starting point.
-- Follow best practices for authentication and session management in React Native.
-- Enhance the state management to ensure a clean and organized flow of data.
-- Implement a persistence layer on the backend for storing historical data points and scores.
-- Document any changes made to the existing codebase and provide a brief explanation of your architectural decisions.
-
-## Submission
-
-- Provide a link to your Git repository containing the updated project.
-- Include instructions on how to run the modified builds locally.
-
-## Evaluation Criteria
-
-- Implementation of Authentication and Session Management
-- Improvement of Data State Management
-- Implementation of a Persistence Layer on the Backend
-- Adherence to Best Practices
-- Documentation
-- Overall Code Quality
-
-**Note:**
-This project is designed to take approximately 3 hours, but there is no strict time limit. We are interested in seeing how far you can get and the quality of your final deliverable. Focus on completing the core requirements before attempting the stretch goals. Feel free to make reasonable assumptions if certain details are not explicitly provided. If you encounter challenges, document them and describe how you would address them with more time.

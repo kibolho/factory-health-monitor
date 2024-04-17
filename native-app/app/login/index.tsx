@@ -8,13 +8,13 @@ import { z } from "zod";
 import { SafeArea } from "../../components/SafeAreaView";
 
 import { Button } from "../../components/Button";
+import { KeyboardAvoiding } from "../../components/KeyboardAvoidView";
 import { TextInput } from "../../components/TextInput/TextInput";
 import { API_ROUTES } from "../../constants";
 import { httpClient } from "../../infra/http";
 import { HttpStatusCode } from "../../infra/http/http-client";
 import { Version } from "../../infra/utils/version";
 import { useAuth } from "../../providers/authProvider";
-import { KeyboardAvoiding } from "../../components/KeyboardAvoidView";
 
 const loginFormSchema = z.object({
   email: z
@@ -181,20 +181,11 @@ const Header = styled.View`
 `;
 
 const Title = styled.Text`
-  font-family: SF Pro Display;
   font-size: 32px;
   font-weight: 700;
   line-height: 38px;
   text-align: left;
   color: #000000;
-`;
-
-const RowView = styled.View`
-  wrap: nowrap;
-  gap: 6px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const BottomView = styled.View`
@@ -203,19 +194,9 @@ const BottomView = styled.View`
   margin-top: 20px;
 `;
 
-const Label = styled.Text`
-  font-family: SF Pro Text;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: center;
-  color: #999999;
-`;
-
 const VersionText = styled.Text`
   margin-top: 12px;
   text-align: center;
-  font-family: SF Pro Text;
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;

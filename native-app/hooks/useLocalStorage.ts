@@ -2,28 +2,29 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Storage } from '../infra/storage';
+import { StorageKeys } from '../infra/storage/storageKeys';
 
 const getKeyValue = async (
   key: any,
-  initialValue: any,
   setValue: (arg: any) => any,
   storageService = Storage
 ): Promise<void> => {
   try {
     const item = await storageService.get(key);
     setValue(item ?? null);
-  } catch {
+  } catch(e){
+    console.error(e)
     await storageService.save(key, null);
     setValue(null);
   }
 };
 
-const useFetch = (key: any, initialValue: any, storageService = Storage): any => {
+const useFetch = (key: any, storageService = Storage): any => {
   const [value, setValue] = useState();
 
   const fetchValue = useCallback(() => {
-    getKeyValue(key, initialValue, setValue, storageService);
-  }, [key, initialValue, setValue, storageService]);
+    getKeyValue(key, setValue, storageService);
+  }, [key, setValue, storageService]);
 
   useEffect(() => {
     fetchValue();
@@ -33,11 +34,11 @@ const useFetch = (key: any, initialValue: any, storageService = Storage): any =>
 };
 
 function useLocalStorage<T = any>(
-  key: string,
+  key: StorageKeys,
   initialValue?: T,
   storageService = Storage
 ): [T, Dispatch<SetStateAction<T | null>>, () => void] {
-  const { value: fetchedValue, fetchValue } = useFetch(key, initialValue, storageService);
+  const { value: fetchedValue, fetchValue } = useFetch(key, storageService);
   const [storedValue, setStoredValue] = useState(fetchedValue);
 
   useEffect(() => {

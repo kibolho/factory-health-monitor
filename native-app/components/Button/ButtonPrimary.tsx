@@ -41,7 +41,6 @@ const PrimaryButton = styled.TouchableOpacity<{
 `;
 
 const PrimaryText = styled.Text`
-  font-family: SF Pro Text;
   font-size: 16px;
   font-weight: 500;
   text-align: center;

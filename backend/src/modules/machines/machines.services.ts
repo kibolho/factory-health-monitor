@@ -84,9 +84,23 @@ export const createMachineHealthRecord = async (
   });
 };
 
-export const getAllMachineHealthRecords = async () => {
-  const records = await db.machineHealthRecord.findMany();
+export const deleteAllMachineHealthRecords = async () => {
+  return db.machineHealthRecord.deleteMany();
+}
 
+
+export const getAllMachineHealthRecords = async () => {
+  return await db.machineHealthRecord.findMany();
+}
+
+export const factoryAllMachineHealthRecords = async (records: {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  machine: string;
+  partType: string;
+  value: number;
+}[]) => {
   return records.reduce((result, record) => {
     const machineType = record.machine as MachineType;
     const partType = record.partType as

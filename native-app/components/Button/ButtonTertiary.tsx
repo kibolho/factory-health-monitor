@@ -45,7 +45,6 @@ const Text = styled.Text<{
   textAlign?: 'left' | 'center';
   variant?: 'light' | 'default';
 }>`
-  font-family: SF Pro Text;
   font-size: 16px;
   font-weight: ${(props) => (props.variant === 'light' ? '400' : '500')};
   line-height: 19px;

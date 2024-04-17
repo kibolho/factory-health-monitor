@@ -38,12 +38,12 @@ The project structure is organized as follows:
 - `components/`: Contains reusable components used throughout the app.
 - `app/`: Contains individual screens or pages/tabs of the app.
 - `data/`: Stores JSON files with machine and part data for evaluation.
-
-## Screens and Features
-
-The app has the following screens and features:
-
-- **Machine Health**: Allows users to select a machine, part name, and part value, and calculates the health score of the machine.
+- `infra/`: Contains utility classes and functions.
+- `providers/`: Contains context providers for the app.
+- `hooks/`: Contains custom hooks used in the app.
+- `services/`: Contains some reusable functions such as logout.
+- `assets/`: Contains images and other assets used in the app.
+- `constants/`: Contains app-wide constants such as colors, api and environment.
 
 ## Adding Tests
 

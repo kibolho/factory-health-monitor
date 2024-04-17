@@ -21,6 +21,7 @@ import { isAuthenticated } from "../../middlewares/is-authenticated";
 import { MiddlewareVersion } from "../../middlewares/version-middleware";
 import { openAPIRoute } from "../../utils/express-zod-openapi-autogen/openAPIRoute";
 import { loginSchema, refreshSchema, registerSchema } from "./schemas";
+import { InvalidTokenError } from "../../exceptions/invalid-token-error";
 
 @DocVersionContainer.register(["mobile"])
 export class MakeRouters {
@@ -140,7 +141,6 @@ export class MakeRouters {
 
     router.post(
       "/auth/refresh",
-      isAuthenticated,
       MiddlewareVersion(MakeRouters.version),
       openAPIRoute(
         {
@@ -168,22 +168,21 @@ export class MakeRouters {
               throw new Error("JWT malformed.");
             }
             const savedRefreshToken = await findRefreshTokenById(payload.jti);
-
             if (!savedRefreshToken || savedRefreshToken.revoked === true) {
               res.status(401);
-              throw new Error("Unauthorized");
+              throw new InvalidTokenError("Token not found or revoked");
             }
 
             const hashedToken = hashToken(refreshToken);
             if (hashedToken !== savedRefreshToken.hashedToken) {
               res.status(401);
-              throw new Error("Unauthorized");
+              throw new InvalidTokenError("Token doesn't match.");
             }
 
             const user = await findUserById(payload.userId);
             if (!user) {
               res.status(401);
-              throw new Error("Unauthorized");
+              throw new InvalidTokenError("Token doesn't match user.");
             }
 
             await deleteRefreshToken(savedRefreshToken.id);

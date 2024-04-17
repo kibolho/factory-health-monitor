@@ -5,13 +5,17 @@ import { MiddlewareVersion } from "../../middlewares/version-middleware";
 import { openAPIRoute } from "../../utils/express-zod-openapi-autogen/openAPIRoute";
 import {
   createMachineHealthRecord,
+  deleteAllMachineHealthRecords,
+  factoryAllMachineHealthRecords,
   getAllMachineHealthRecords,
-  getMachineHealthCalculation
+  getMachineHealthCalculation,
 } from "./machines.services";
 import {
+  MachineHealthRecord,
   machineHealthRecordSchema,
   machineHealthScoreCalculationResponseSchema,
 } from "./schemas";
+import { z } from "zod";
 
 @DocVersionContainer.register(["mobile"])
 export class MakeRouters {
@@ -20,7 +24,7 @@ export class MakeRouters {
 
   register(router: express.Router): void {
     router.post(
-      "/machine-health/register",
+      "/machine-health/record",
       isAuthenticated,
       MiddlewareVersion(MakeRouters.version),
       openAPIRoute(
@@ -38,13 +42,50 @@ export class MakeRouters {
           if (!result.id) {
             res.status(400).json({ message: "Invalid data" });
           } else {
-            res.json(result);
+            res.status(201).json(result);
           }
         }
       )
     );
+
+    router.get(
+      "/machine-health/record",
+      isAuthenticated,
+      MiddlewareVersion(MakeRouters.version),
+      openAPIRoute(
+        {
+          tag: "Machine",
+          summary: "Retrieve all machine health records",
+          response: z.array(machineHealthRecordSchema),
+        },
+        async (_, res) => {
+          const result = await getAllMachineHealthRecords();
+          res.json(result as MachineHealthRecord[]);
+        }
+      )
+    );
+
+    router.delete(
+      "/machine-health/record",
+      isAuthenticated,
+      MiddlewareVersion(MakeRouters.version),
+      openAPIRoute(
+        {
+          tag: "Machine",
+          summary: "Delete all machine health records",
+          response: z.object({
+            message: z.string(),
+          }),
+        },
+        async (_, res) => {
+          const result = await deleteAllMachineHealthRecords();
+          res.status(202).json({ message: `${result.count} records deleted` });
+        }
+      )
+    );
+
     // Endpoint to get machine health score
-    router.post(
+    router.get(
       "/machine-health/calculate",
       isAuthenticated,
       MiddlewareVersion(MakeRouters.version),
@@ -54,9 +95,11 @@ export class MakeRouters {
           summary: "Calculate machine and factory health score",
           response: machineHealthScoreCalculationResponseSchema,
         },
-        async (req, res) => {
-          const record = await getAllMachineHealthRecords()
-          const result = getMachineHealthCalculation(record);
+        async (_, res) => {
+          const records = await getAllMachineHealthRecords();
+          const factoryRecords = await factoryAllMachineHealthRecords(records)
+          const result = getMachineHealthCalculation(factoryRecords);
+
           if (result.error) {
             res.status(400).json(result);
           } else {

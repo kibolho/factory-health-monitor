@@ -5,14 +5,17 @@ export interface BaseErrorMetadata {
   message: string
   details?: string
   cause?: unknown
+  status?: number
 }
 
 export class BaseError extends Error implements BaseErrorMetadata {
+
   public constructor(
     public code: ErrorsType,
     message?: string,
     public details?: string,
     public cause?: unknown,
+    public status?: number
   ) {
     super(message)
   }

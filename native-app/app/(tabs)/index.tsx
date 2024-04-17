@@ -1,100 +1,100 @@
-import axios from 'axios';
-import { Link, useFocusEffect } from 'expo-router';
-import { useCallback } from 'react';
-import { Button, Platform, StyleSheet } from 'react-native';
-import { MachineScore } from '../../components/MachineScore';
-import { PartsOfMachine } from '../../components/PartsOfMachine';
-import { Text, View } from '../../components/Themed';
-import { useMachineData } from '../../hooks/useMachineData';
-
-let apiUrl: string =
-  'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
-
-if (__DEV__) {
-  apiUrl = `http://${
-    Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
-  }:3001/machine-health/register`;
-}
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { Link } from "expo-router";
+import { Alert, Button, StyleSheet } from "react-native";
+import { MachineScore } from "../../components/MachineScore";
+import { PartsOfMachine } from "../../components/PartsOfMachine";
+import { Text, View } from "../../components/Themed";
+import { API_ROUTES } from "../../constants";
+import { httpClient } from "../../infra/http";
+import { HttpStatusCode } from "../../infra/http/http-client";
+import { queryClient } from "../../providers/reactQueryProvider";
 
 export default function StateScreen() {
-  const {machineData, resetMachineData, loadMachineData, setScores} =
-    useMachineData();
-
-  //Doing this because we're not using central state like redux
-  useFocusEffect(
-    useCallback(() => {
-      loadMachineData();
-    }, []),
-  );
-
-  const calculateHealth = useCallback(async () => {
-    try {
-      const response = await axios.post(apiUrl, {
-        machines: machineData?.machines,
+  const { data: machineData } = useQuery({
+    queryKey: ["machineRecords"],
+    queryFn: async () => {
+      const { statusCode, body } = await httpClient.request({
+        url: API_ROUTES.machine_record,
+        method: "get",
       });
-
-      if (response.data?.factory) {
-        setScores(response.data);
+      if (statusCode === HttpStatusCode.ok) {
+        return body;
       }
-    } catch (error) {
-      console.error(error);
-      console.log(
-        `There was an error calculating health. ${
-          error.toString() === 'AxiosError: Network Error'
-            ? 'Is the api server started?'
-            : error
-        }`,
-      );
-    }
-  }, [machineData]);
+      throw new Error("Failed to retrieve machine records");
+    },
+  });
+  const { mutate: resetMachineData } = useMutation({
+    mutationFn: async () => {
+      const { statusCode, body } = await httpClient.request({
+        url: API_ROUTES.machine_record,
+        method: "delete",
+      });
+      if (statusCode !== HttpStatusCode.accepted) {
+        throw new Error("Failed to reset machine records");
+      }
+      queryClient.setQueryData(["machineRecords"], () => []);
+      queryClient.setQueryData(["machineScore"], () => []);
+      return body.message;
+    },
+    onError: (error) => {
+      Alert.alert("Error", error.message);
+    },
+    onSuccess(data) {
+      Alert.alert("Success", data);
+    },
+  });
+
+  const { data: machineScore, mutate: calculateHealth } = useMutation({
+    mutationKey: ["machineScore"],
+    mutationFn: async () => {
+      const { statusCode, body } = await httpClient.request({
+        url: API_ROUTES.machine_calculate,
+        method: "get",
+      });
+      if (statusCode === HttpStatusCode.ok) {
+        return body;
+      }
+      throw new Error("Failed to calculate health");
+    },
+    onError: (error) => {
+      Alert.alert("Error", error.message);
+    },
+  });
 
   return (
     <View style={styles.container}>
       <View style={styles.separator} />
-      {!machineData && (
-        <Link href='/two' style={styles.link}>
+      {!(machineData?.length > 0) && (
+        <Link href="/two" style={styles.link}>
           <Text style={styles.linkText}>
             Please log a part to check machine health
           </Text>
         </Link>
       )}
-      {machineData && (
+      {machineData?.length > 0 && (
         <>
           <PartsOfMachine
-            machineName={'Welding Robot'}
-            parts={machineData?.machines?.weldingRobot}
-          />
-          <PartsOfMachine
-            machineName={'Assembly Line'}
-            parts={machineData?.machines?.assemblyLine}
-          />
-          <PartsOfMachine
-            machineName={'Painting Station'}
-            parts={machineData?.machines?.paintingStation}
-          />
-          <PartsOfMachine
-            machineName={'Quality Control Station'}
-            parts={machineData?.machines?.qualityControlStation}
+            machineData={machineData}
           />
           <View
             style={styles.separator}
-            lightColor='#eee'
-            darkColor='rgba(255,255,255,0.1)'
+            lightColor="#eee"
+            darkColor="rgba(255,255,255,0.1)"
           />
           <Text style={styles.title}>Factory Health Score</Text>
           <Text style={styles.text}>
-            {machineData?.scores?.factory
-              ? machineData?.scores?.factory
-              : 'Not yet calculated'}
+            {!!machineScore?.factory || machineScore?.factory === 0
+              ? machineScore?.factory
+              : "Not yet calculated"}
           </Text>
-          {machineData?.scores?.machineScores && (
+          {machineScore && (
             <>
               <Text style={styles.title2}>Machine Health Scores</Text>
-              {Object.keys(machineData?.scores?.machineScores).map((key) => (
+              {Object.keys(machineScore?.machineScores)?.map((key) => (
                 <MachineScore
                   key={key}
                   machineName={key}
-                  score={machineData?.scores?.machineScores[key]}
+                  score={machineScore?.machineScores[key]}
                 />
               ))}
             </>
@@ -103,15 +103,15 @@ export default function StateScreen() {
       )}
       <View
         style={styles.separator}
-        lightColor='#eee'
-        darkColor='rgba(255,255,255,0.1)'
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
       />
-      <Button title='Calculate Health' onPress={calculateHealth} />
+      <Button title="Calculate Health" onPress={() => calculateHealth()} />
       <View style={styles.resetButton}>
         <Button
-          title='Reset Machine Data'
+          title="Reset Machine Data"
           onPress={async () => await resetMachineData()}
-          color='#FF0000'
+          color="#FF0000"
         />
       </View>
     </View>
@@ -121,20 +121,20 @@ export default function StateScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   title2: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 20,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   text: {},
   link: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 14,
-    color: '#2e78b7',
+    color: "#2e78b7",
   },
   resetButton: {
     marginTop: 10,

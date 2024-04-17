@@ -37,27 +37,6 @@ yarn start
 
 The API will be accessible at `http://localhost:3001` by default. You can change the port or other configurations in the `app.ts` file.
 
-### Evaluating Machine Health
-
-You can evaluate the health of a machine by sending a POST request to the `/machine-health` endpoint. Here's an example using cURL:
-
-```bash
-curl -X POST -H "Content-Type: application/json" -d '{
-  "machines": {
-    "weldingRobot": {
-      "errorRate": "0.5",
-      "vibrationLevel": "2.5"
-    }
-  }
-}' http://localhost:3001/machine-health
-```
-
-The response will include the machine name and its health score.
-
-### API Endpoints
-
-- `POST /machine-health`: Calculate the health of a machine based on provided data.
-
 ## Testing
 
 You can add and run tests to ensure the correctness of the API. Follow these steps to add tests:

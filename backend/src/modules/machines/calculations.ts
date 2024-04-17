@@ -31,15 +31,16 @@ export function calculatePartHealth(
   part: partInfo,
 ): number {
   const machineInfo = machineDataTyped[machineName];
+
   if (!machineInfo) {
     return 0; // Handle cases where the machine name is not found in machineData
   }
 
-  const {value} = part;
   if (!machineInfo[part.name]) {
     return -1;
   }
   const {normalRange, abnormalRange, optimalRange} = machineInfo[part.name];
+  const {value} = part;
 
   if (value >= normalRange[0] && value <= normalRange[1]) {
     // Linearly scale the score between 50 and 100 based on the distance from normal to optimal
@@ -75,6 +76,8 @@ export function calculateMachineHealth(
     partsCounter++;
     return sum + score;
   }, 0);
+
+
 
   if (partsCounter === 0) {
     return 0;

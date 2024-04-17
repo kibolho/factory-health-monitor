@@ -1,13 +1,21 @@
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from "react-native";
 
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { View } from '../../components/Themed';
+import { MachineRecordLog } from "../../components/MachineRecordLog/MachineRecordLog";
+import { View } from "../../components/Themed";
+import { logout } from "../../services/logout";
+import { httpClient } from "../../infra/http";
 
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.separator} />
-      <EditScreenInfo />
+      <MachineRecordLog />
+      <View style={styles.separator} />
+      <Button
+        title="Logout"
+        onPress={async () => logout({ httpClient: httpClient })}
+        color="#FF0000"
+      />
     </View>
   );
 }
@@ -15,15 +23,15 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 20,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });

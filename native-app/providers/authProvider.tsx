@@ -8,7 +8,7 @@ const AuthContext = createContext<
       setUserInfo: React.Dispatch<IUser | null>;
       userInfo: IUser;
       setTokens: React.Dispatch<ITokens | null>;
-      isAuthenticated: boolean;
+      isAuthenticated: boolean | undefined;
     }
   | undefined
 >(undefined);
@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <AuthContext.Provider
       value={{
         setTokens,
-        isAuthenticated: !!tokens,
+        isAuthenticated: tokens === undefined ? undefined : !!tokens,
         setUserInfo,
         userInfo,
       }}>

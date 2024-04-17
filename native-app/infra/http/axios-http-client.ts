@@ -40,11 +40,17 @@ AxiosInstance.interceptors.response.use(
       if (!isRefreshing) {
         isRefreshing = true;
         const tokens = await Storage.get<ITokens>(StorageKeys.SAVED_TOKENS);
-        AxiosInstance.post(API_ROUTES.refresh, {
-          refreshToken: tokens?.refreshToken,
-        })
+        httpClient
+          .request({
+            url: API_ROUTES.refresh,
+            method: "post",
+            body: {
+              refreshToken: tokens?.refreshToken,
+            },
+          })
           .then(async (response) => {
-            const { accessToken, refreshToken } = response.data;
+            if(response.statusCode !== HttpStatusCode.ok) throw new Error("Failed to refresh token");
+            const { accessToken, refreshToken } = response.body;
 
             await Storage.save(StorageKeys.SAVED_TOKENS, {
               accessToken,
@@ -61,8 +67,8 @@ AxiosInstance.interceptors.response.use(
           .catch((err) => {
             failedRequestsQueue.forEach((request) => request.onFailure(err));
             failedRequestsQueue = [];
-
-            logout();
+            
+            logout({ httpClient });
           })
           .finally(() => {
             isRefreshing = false;
@@ -102,7 +108,7 @@ export class AxiosHttpClient implements HttpClient {
     data.params = {
       version: "1.0.0",
       ...data.params,
-    }
+    };
     const response = await AxiosInstance.request({
       baseURL: data.baseURL,
       url: data.url,

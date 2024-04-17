@@ -9,6 +9,7 @@ import {
 
 export const machineHealthRecordSchema = z
   .object({
+    id: z.number().optional(),
     machine: z.nativeEnum(MachineType),
     partType: z.union([
       z.nativeEnum(WeldingRobotPart),
@@ -17,10 +18,14 @@ export const machineHealthRecordSchema = z
       z.nativeEnum(QualityControlStationPart),
     ]),
     value: z.number().min(0).openapi({ example: 4.0 }),
+    createAt: z.date().optional(),
+    updatedAt: z.date().optional(),
   })
   .openapi({ description: "Machine health record data" });
 
+
 export type MachineHealthRecord = z.infer<typeof machineHealthRecordSchema>;
+
 export const machineHealthScoreCalculationResponseSchema = z
   .object({
     machineScores: z.record(
