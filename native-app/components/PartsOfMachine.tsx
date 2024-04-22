@@ -21,7 +21,8 @@ export const PartsOfMachine = ({
         return acc;
       }, {})
     );
-  }, machineData);
+  }, [machineData]);
+
   return factoryData.map(([machine, part],index) => (
     <View key={`${machine}${part}${index}`} style={styles.container}>
       <Text style={styles.title}>{machineNames[machine]}</Text>
