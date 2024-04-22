@@ -1,37 +1,25 @@
-import { Button, StyleSheet } from "react-native";
+import { Button } from "react-native";
 
+import styled from "styled-components/native";
 import { MachineRecordLog } from "../../components/MachineRecordLog/MachineRecordLog";
-import { View } from "../../components/Themed";
-import { logout } from "../../services/logout";
 import { httpClient } from "../../infra/http";
+import { logout } from "../../services/logout";
 
 export default function TabTwoScreen() {
   return (
-    <View style={styles.container}>
-      <View style={styles.separator} />
+    <Container>
       <MachineRecordLog />
-      <View style={styles.separator} />
       <Button
         title="Logout"
         onPress={async () => logout({ httpClient: httpClient })}
         color="#FF0000"
       />
-    </View>
+    </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 20,
-    height: 1,
-    width: "80%",
-  },
-});
+const Container = styled.View`
+  flex: 1;
+  padding: 24px;
+  background-color: #fff;
+`;
