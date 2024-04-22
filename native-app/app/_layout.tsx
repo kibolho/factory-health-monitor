@@ -10,7 +10,6 @@ import { Try } from "expo-router/build/views/Try";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { ReactQueryProvider } from "../providers/reactQueryProvider";
-import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AuthProvider } from "../providers/authProvider";
 
 export { ErrorBoundary } from "expo-router";
@@ -47,7 +46,6 @@ export default function RootLayout() {
   return (
     <Try catch={ErrorBoundary}>
       <ReactQueryProvider>
-        <KeyboardProvider>
           <AuthProvider>
             <ThemeProvider
               value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
@@ -73,7 +71,6 @@ export default function RootLayout() {
               </Stack>
             </ThemeProvider>
           </AuthProvider>
-        </KeyboardProvider>
       </ReactQueryProvider>
     </Try>
   );

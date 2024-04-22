@@ -75,7 +75,7 @@ export default function Login() {
         email: data?.email,
       });
       setIsLoading(false);
-      return router.push("/(tabs)");
+      return router.push('/(tabs)');
     }
     setIsLoading(false);
     Alert.alert("Error", body?.message || "Unable to log in. Try again.");

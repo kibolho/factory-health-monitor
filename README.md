@@ -30,7 +30,7 @@ And finally run the backend:
 
 ### API Documentation
 
-We have the OpenAPI documentation for the API in the `backend` folder. You can view the documentation by running the backend and navigating to `http://localhost:3001/docs`.
+We have the OpenAPI documentation for the API in the `backend` folder. You can view the documentation by running the backend and navigating to `http://localhost:3001/docs` to access the Swagger docs.
 
 [![docs-image](./.github/docs.png)](http://localhost:3001/docs)
 

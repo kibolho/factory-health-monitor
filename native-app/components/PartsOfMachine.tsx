@@ -26,7 +26,7 @@ export const PartsOfMachine = ({
     <View key={`${machine}${part}${index}`} style={styles.container}>
       <Text style={styles.title}>{machineNames[machine]}</Text>
       {Object.entries(part).map(([partName, value]) => (
-        <Text style={styles.label}>
+        <Text key={partName} style={styles.label}>
           {partName}: {value}
         </Text>
       ))}

@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from 'react';
 import {
   Keyboard,
+  KeyboardAvoidingView,
   KeyboardAvoidingViewProps,
   Platform,
   StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 type Props = PropsWithChildren<
   {
