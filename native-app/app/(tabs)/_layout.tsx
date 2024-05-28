@@ -3,6 +3,8 @@ import { Tabs } from 'expo-router';
 import { useColorScheme } from 'react-native';
 
 import Colors from '../../constants/Colors';
+import { Logo } from '../../components/Logo';
+import styled from 'styled-components/native';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -21,6 +23,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        headerRight: () => <IconContainer><Logo height={26} width={26} /></IconContainer>,
       }}
     >
       <Tabs.Screen
@@ -40,3 +43,10 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const IconContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;

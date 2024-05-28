@@ -7207,11 +7207,6 @@ react-native-gesture-handler@~2.14.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-keyboard-controller@^1.11.6:
-  version "1.11.6"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.11.6.tgz#4c9f2950f872a42745f32f46c21475cd1e4a7154"
-  integrity sha512-EFx17Uqccsf8jRqEJxqgTIwOdwSKLhA53qQ5Y6z9rvTO0q99/wQbq6F1otEE/oq27HlVGkYk1aYJ7U2nKrtqKw==
-
 react-native-picker-module@^2.0.7:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/react-native-picker-module/-/react-native-picker-module-2.0.7.tgz#68534f201a7dc7d8d79dd600a6bf507375be94c3"

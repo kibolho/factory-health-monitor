@@ -181,7 +181,6 @@ const Header = styled.View`
 `;
 
 const Title = styled.Text`
-  font-family: SF Pro Display;
   font-size: 32px;
   font-weight: 700;
   line-height: 38px;

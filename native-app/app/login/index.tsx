@@ -15,6 +15,7 @@ import { httpClient } from "../../infra/http";
 import { HttpStatusCode } from "../../infra/http/http-client";
 import { Version } from "../../infra/utils/version";
 import { useAuth } from "../../providers/authProvider";
+import { Logo } from "../../components/Logo";
 
 const loginFormSchema = z.object({
   email: z
@@ -75,7 +76,7 @@ export default function Login() {
         email: data?.email,
       });
       setIsLoading(false);
-      return router.push('/(tabs)');
+      return router.push("/(tabs)");
     }
     setIsLoading(false);
     Alert.alert("Error", body?.message || "Unable to log in. Try again.");
@@ -85,75 +86,78 @@ export default function Login() {
   return (
     <SafeArea>
       <KeyboardAvoiding>
-        <BodyView>
-          <Header>
-            <Title>Login</Title>
-          </Header>
-          <Controller
-            name="email"
-            control={control}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              fieldState: { error },
-            }) => (
-              <TextInput
-                ref={ref}
-                autoCorrect={false}
-                placeholder="your@email.com"
-                inputMode="email"
-                autoCapitalize="none"
-                autoComplete="email"
-                keyboardType="email-address"
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  setFocus("password");
-                }}
-                textError={error?.message as string}
-              />
-            )}
-          />
+        <Container>
+          <Logo height={64} width={64} />
+          <BodyView>
+            <Header>
+              <Title>Login</Title>
+            </Header>
+            <Controller
+              name="email"
+              control={control}
+              render={({
+                field: { value, onChange, onBlur, ref },
+                fieldState: { error },
+              }) => (
+                <TextInput
+                  ref={ref}
+                  autoCorrect={false}
+                  placeholder="your@email.com"
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  keyboardType="email-address"
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    setFocus("password");
+                  }}
+                  textError={error?.message as string}
+                />
+              )}
+            />
 
-          <Controller
-            name="password"
-            control={control}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              fieldState: { error },
-            }) => (
-              <TextInput
-                ref={ref}
-                secureTextEntry
-                placeholder="Password"
-                autoComplete="password"
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                returnKeyType="go"
-                onSubmitEditing={handleSubmit(onSubmit)}
-                textError={error?.message as string}
-              />
-            )}
-          />
-        </BodyView>
-        <ColumnView>
-          <Button.Primary
-            onPress={handleSubmit(onSubmit)}
-            isLoading={isLoading}
-          >
-            Login
-          </Button.Primary>
+            <Controller
+              name="password"
+              control={control}
+              render={({
+                field: { value, onChange, onBlur, ref },
+                fieldState: { error },
+              }) => (
+                <TextInput
+                  ref={ref}
+                  secureTextEntry
+                  placeholder="Password"
+                  autoComplete="password"
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  returnKeyType="go"
+                  onSubmitEditing={handleSubmit(onSubmit)}
+                  textError={error?.message as string}
+                />
+              )}
+            />
+          </BodyView>
+          <ColumnView>
+            <Button.Primary
+              onPress={handleSubmit(onSubmit)}
+              isLoading={isLoading}
+            >
+              Login
+            </Button.Primary>
 
-          <Button.Tertiary
-            onPress={() => {
-              router.replace("/signup");
-            }}
-          >
-            Sign up
-          </Button.Tertiary>
-        </ColumnView>
+            <Button.Tertiary
+              onPress={() => {
+                router.replace("/signup");
+              }}
+            >
+              Sign up
+            </Button.Tertiary>
+          </ColumnView>
+        </Container>
       </KeyboardAvoiding>
       <BottomView>
         <VersionText>{Version.getFullVersionStatic()}</VersionText>
@@ -162,11 +166,16 @@ export default function Login() {
   );
 }
 
-const BodyView = styled.View`
+const Container = styled.View`
   flex: 1;
   gap: 20px;
   padding-top: 40px;
   padding: 20px;
+`;
+
+const BodyView = styled.View`
+  flex: 1;
+  gap: 20px;
   justify-content: center;
 `;
 
